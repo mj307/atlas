@@ -1,6 +1,6 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from pydantic import BaseModel
-
+from shared.auth import verify_mcp_token
 app = FastAPI()
 
 
@@ -18,7 +18,10 @@ async def _calculate(expression: str) -> str:
 
 # define the api endpoint
 @app.post("/tools/calculate")
-async def calculate(req: CalcRequest):
+async def calculate(
+    req: CalcRequest,
+    _: str = Depends(verify_mcp_token)
+):
     print("Received:", req.expression)
     result = await _calculate(req.expression)
     print("Returning:", result)
