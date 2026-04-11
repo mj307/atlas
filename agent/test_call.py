@@ -1,6 +1,7 @@
 import httpx
+import asyncio
 
-async def calculate(expression: str):
+async def test():
     async with httpx.AsyncClient() as client:
         response = await client.post(
             "http://localhost:8002/tools/calculate",
@@ -8,7 +9,9 @@ async def calculate(expression: str):
                 "Authorization": "Bearer mysecret123",
                 "Content-Type": "application/json"
             },
-            json={"expression": expression}
+            json={"expression": "6*6"}
         )
 
-        return response.json()
+        print(response.json())
+
+asyncio.run(test())

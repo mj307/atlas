@@ -3,7 +3,7 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
 security = HTTPBearer()
 
-SECRET_KEY = "secret" # temp
+SECRET_KEY = "mysecret123" # temp
 
 def verify_mcp_token(credentials: HTTPAuthorizationCredentials = Depends(security)):
     token = credentials.credentials
