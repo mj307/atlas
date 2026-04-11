@@ -1,0 +1,7 @@
+uvicorn mcp_servers.calculator.main:app --port 8002 --reload
+
+When you load this onto your computer, you can add /docs.
+
+inside docs, you can see the post /tools/calculate function. inside it you can give a function and let it run. the thing is,
+because i did authorize it with a secret beared token (mysecret123), i have to scroll up to the "Authorize" green button on the upper right side and enter
+my key in there directly. then you refresh and can add an expression and it will run.
