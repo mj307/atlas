@@ -9,10 +9,12 @@ from langchain_core.messages import BaseMessage
 - `session_id: str` — passed through for logging; future multi-user sessions would
   use this to load/save conversation history
 '''
+
+# not a real class bc it doesnt have any init or methods
+# more like a dataclass
 class AgentState(TypedDict):
     messages: Annotated[List[BaseMessage], add_messages]
     
-
 # add messages merges multiple messages together
 # so Annotated + add_messages means that we append messages automatically instead of replacing messages each time
 
