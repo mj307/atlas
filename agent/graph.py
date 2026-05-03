@@ -25,36 +25,53 @@ based on that. for example, if the LLM wants a tool, go to the tools node. if no
 '''
 
 
+# def call_model(state: AgentState):
+#     llm = get_llm(ALL_TOOLS)
+#     messages = state["messages"]
+#     response = llm.invoke(messages)
+#     return {"messages": [response]}
+
+
+
+
+# def should_continue(state: AgentState):
+#     last = state["messages"][-1]
+#     if hasattr(last, "tool_calls") and last.tool_calls:
+#         return "tools"
+#     return END
+
+
 def call_model(state: AgentState):
     llm = get_llm(ALL_TOOLS)
-    messages = state["messages"]
-    response = llm.invoke(messages)
-    return {"messages": [response]}
+    return {"messages": [llm.invoke(state["messages"])]}
 
 
 def should_continue(state: AgentState):
     last = state["messages"][-1]
-    if hasattr(last, "tool_calls") and last.tool_calls:
-        return "tools"
-    return END
 
+    # If LLM requests tool
+    if getattr(last, "tool_calls", None):
+        return "tools"
+
+    return END
 
 
 def build_graph():
     graph = StateGraph(AgentState)
+
     graph.add_node("agent", call_model)
-    graph.add_node("tools", ToolNode(ALL_TOOLS)) # internal langgraph package
+    graph.add_node("tools", ToolNode(ALL_TOOLS))
+
     graph.set_entry_point("agent")
+
     graph.add_conditional_edges(
         "agent",
         should_continue,
-        {
-            "tools": "tools",
-            END: END,
-        },
+        {"tools": "tools", END: END},
     )
-    graph.add_edge("tools", "agent")
-    return graph.compile()
 
+    graph.add_edge("tools", "agent")
+
+    return graph.compile()
 
 agent_graph = build_graph()

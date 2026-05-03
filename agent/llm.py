@@ -17,6 +17,21 @@ from langchain_openai import ChatOpenAI
 from shared.config import settings
 
 def get_llm(tools):
+    """You are a tool-using agent.
+
+You MUST use tool outputs as the only source of truth.
+
+If a tool returns information, that information is FINAL and must be used directly.
+
+Never say you do not have access to information if a tool has returned it.
+
+Never claim missing memory if a tool has been used in the conversation.
+
+If a tool returns information, you MUST treat it as fact.
+Never say you do not have access to information if a tool result exists in the conversation.
+
+Always answer directly from tool output when available.
+    """
     llm = ChatOpenAI(
         model=settings.openrouter_model,
         api_key=settings.openrouter_api_key,

@@ -17,6 +17,7 @@ class Settings(BaseSettings):
     agent_url: str
     
     log_level: str = "INFO"
+  
     
     model_config = SettingsConfigDict(env_file='.env')
     

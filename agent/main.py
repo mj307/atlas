@@ -2,6 +2,9 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from langchain_core.messages import HumanMessage
 
+# import sys
+# from pathlib import Path
+# sys.path.append(str(Path(__file__).resolve().parents[1]))
 from agent.graph import agent_graph
 
 app = FastAPI()

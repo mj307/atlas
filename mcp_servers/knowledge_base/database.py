@@ -52,11 +52,11 @@ async def delete_note(note_id: int):
         return {"deleted": note_id}
 
 
-async def search_notes(query: str):
+async def search_notes(query: str, k: int = 5):
     async with aiosqlite.connect(DB_PATH) as db:
         cursor = await db.execute(
-            "SELECT id, content FROM notes WHERE content LIKE ?",
-            (f"%{query}%",)
+            "SELECT id, content FROM notes WHERE content LIKE ? LIMIT ?",
+            (f"%{query}%", k)
         )
         rows = await cursor.fetchall()
         return [{"id": r[0], "content": r[1]} for r in rows]
